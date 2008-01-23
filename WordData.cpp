@@ -2,7 +2,7 @@
  * 単語データクラス
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 #include "WordData.h"
 
@@ -93,15 +93,29 @@ int WordData::countData(TCHAR* filename){
 	TCHAR buf[LINE_MAX];
 	int count=0;
 
-	if((fp = fopen(filename, "r"))==NULL){
+	if((fp = _tfopen(filename, _T("rb")))==NULL){
 		MessageBox(NULL, TEXT("データファイル読み込み失敗"),
 					IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 		return -1;
 	}
 
-	while(fgets(buf, LINE_MAX, fp) != NULL){
+	// BOM 判定
+	if(_fgetts(buf, 2, fp) != NULL){
+
+		if(buf[0] != 0xfeff){
+			MessageBox(NULL, TEXT("Unicodeファイルではありません"),
+						_T("MSNChangeMSG"), MB_ICONSTOP | MB_OK);
+			return -1;
+		}
+	}else{
+		MessageBox(NULL, TEXT("データファイル読み込み失敗"),
+			_T("MSNChangeMSG"), MB_ICONSTOP | MB_OK);
+		return -1;
+	}
+
+	while(_fgetts(buf, LINE_MAX, fp) != NULL){
 		// 空行無視
-		if(_tcslen(buf) <= 1){
+		if(_tcscmp(buf, TEXT("\r\n")) == 0){
 			continue;
 		}
 
@@ -133,16 +147,29 @@ int WordData::readData(TCHAR* filename){
 	TCHAR* q;
 	int count=0;
 
-	if((fp = fopen(filename, "r"))==NULL){
+	if((fp = _tfopen(filename, _T("rb")))==NULL){
 		MessageBox(NULL, TEXT("データファイル読み込み失敗"),
 					IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 		return FALSE;
 	}
 
-	while(fgets(buf, LINE_MAX, fp) != NULL){
+	// BOM 判定
+	if(_fgetts(buf, 2, fp) != NULL){
+		if(buf[0] != 0xfeff){
+			MessageBox(NULL, TEXT("Unicodeファイルではありません"),
+						_T("MSNChangeMSG"), MB_ICONSTOP | MB_OK);
+			return FALSE;
+		}
+	}else{
+		MessageBox(NULL, TEXT("データファイル読み込み失敗"),
+			_T("MSNChangeMSG"), MB_ICONSTOP | MB_OK);
+			return FALSE;
+	}
+
+	while(_fgetts(buf, LINE_MAX, fp) != NULL){
 
 		// 空行無視
-		if(_tcslen(buf) <= 1){
+		if(_tcscmp(buf, TEXT("\r\n")) == 0){
 			continue;
 		}
 
@@ -152,41 +179,42 @@ int WordData::readData(TCHAR* filename){
 		}
 
 		// 改行削除
-		if((p=strchr(buf, '\n')) != NULL){
-			*p='\0';
+		p = _tcsstr(buf, TEXT("\r\n"));
+		if(p != NULL){
+			*p = _T('\0');
 		}
 
-		if((p=strtok(buf, "\t")) == NULL){
+		if((p=_tcstok(buf, _T("\t"))) == NULL){
 			MessageBox(NULL, TEXT("データファイルフォーマットエラー"),
 						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 			return FALSE;
 		}
 
 		// Allocate word memory
-		if((q=(TCHAR*)malloc(strlen(p) + 1)) == NULL){
+		if((q=(TCHAR*)malloc(sizeof(TCHAR) * _tcslen(p) + 1)) == NULL){
 			MessageBox(NULL, TEXT("メモリが確保できませんでした"),
 						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 			return FALSE;
 		}
 
 		worddata[count].word = q;
-		_tcsncpy(worddata[count].word, p, strlen(p) + 1);
+		_tcsncpy(worddata[count].word, p, _tcslen(p) + 1);
 
-		if((p=strtok(NULL, "\t")) == NULL){
+		if((p=_tcstok(NULL, _T("\t"))) == NULL){
 			MessageBox(NULL, TEXT("データファイルフォーマットエラー"),
 						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 			return FALSE;
 		}
 
 		// Allocate meaning memory
-		if((q=(TCHAR*)malloc(strlen(p) + 1)) == NULL){
+		if((q=(TCHAR*)malloc(sizeof(TCHAR) * _tcslen(p) + 1)) == NULL){
 			MessageBox(NULL, TEXT("メモリが確保できませんでした"),
 						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 			return FALSE;
 		}
 
 		worddata[count].mean = q;
-		_tcsncpy(worddata[count].mean, p, strlen(p) + 1);
+		_tcsncpy(worddata[count].mean, p, _tcslen(p) + 1);
 
 		count++;
 	}

@@ -2,7 +2,7 @@
  * 初期設定ファイルクラス
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
@@ -11,16 +11,16 @@
 #include <tchar.h>
 
 // 初期設定ファイル名
-#define INIFILENAME "flashword.ini"
+#define INIFILENAME _T("flashword.ini")
 
 // ウィンドウのデフォルト位置
-#define DEFAULT_WINDOW_TOP "10"
-#define DEFAULT_WINDOW_LEFT "10"
+#define DEFAULT_WINDOW_TOP _T("10")
+#define DEFAULT_WINDOW_LEFT _T("10")
 // ウィンドウのデフォルトサイズ
-#define DEFAULT_WINDOW_WIDTH "300"
-#define DEFAULT_WINDOW_HEIGHT "70"
+#define DEFAULT_WINDOW_WIDTH _T("300")
+#define DEFAULT_WINDOW_HEIGHT _T("70")
 // デフォルトのインターバル
-#define DEFAULT_INTERVAL "4"
+#define DEFAULT_INTERVAL _T("4")
 
 #define OK 0
 #define ERR -1

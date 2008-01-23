@@ -2,16 +2,16 @@
  * FlashWord リソースファイル
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 
 /* 定数 */
-#define IDC_STATIC_WINDOWCLASSNAME "FlashWord"
-#define IDC_STATIC_APPNAME "FlashWord"
-#define IDC_STATIC_AUTHOR "Toshi"
-#define IDC_STATIC_VERSION "Version 0.1"
+#define IDC_STATIC_WINDOWCLASSNAME _T("FlashWord")
+#define IDC_STATIC_APPNAME _T("FlashWord")
+#define IDC_STATIC_AUTHOR _T("Toshi")
+#define IDC_STATIC_VERSION _T("Version 0.2")
 #define IDC_STATIC_COPYRIGHT \
-		IDC_STATIC_APPNAME " " IDC_STATIC_VERSION " " IDC_STATIC_AUTHOR
+		IDC_STATIC_APPNAME _T(" ") IDC_STATIC_VERSION _T(" ") IDC_STATIC_AUTHOR
 
 /* メニューID設定 */
 #define IDM_FLASHWORD_ABOUT 1

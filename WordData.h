@@ -2,7 +2,7 @@
  * 単語データクラスヘッダ
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 #ifndef __WORDDATA_H__
 #define __WORDDATA_H__

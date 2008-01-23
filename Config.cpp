@@ -2,7 +2,7 @@
  * 初期設定ファイルクラス
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 #include "Config.h"
 
@@ -100,28 +100,28 @@ int Config::writeWindowRect(RECT* rect){
 		return ERR;
 
 	// Top 位置の保存
-	wsprintf(szBuf, "%d", rect->top);
+	wsprintf(szBuf, _T("%d"), rect->top);
 
 	if(!WritePrivateProfileString(
 		TEXT("General"), TEXT("Top"), szBuf, szIniFileName))
 		return ERR;
 
 	// Left 位置の保存
-	wsprintf(szBuf, "%d", rect->left);
+	wsprintf(szBuf, _T("%d"), rect->left);
 
 	if(!WritePrivateProfileString(
 		TEXT("General"), TEXT("Left"), szBuf, szIniFileName))
 		return ERR;
 
 	// Width の保存
-	wsprintf(szBuf, "%d", rect->right - rect->left);
+	wsprintf(szBuf, _T("%d"), rect->right - rect->left);
 
 	if(!WritePrivateProfileString(
 		TEXT("General"), TEXT("Width"), szBuf, szIniFileName))
 		return ERR;
 
 	// Height の保存
-	wsprintf(szBuf, "%d", rect->bottom - rect->top);
+	wsprintf(szBuf, _T("%d"), rect->bottom - rect->top);
 
 	if(!WritePrivateProfileString(
 		TEXT("General"), TEXT("Height"), szBuf, szIniFileName))
@@ -172,7 +172,7 @@ int Config::writeInterval(int interval){
 		return ERR;
 
 	// Interval の保存
-	wsprintf(szBuf, "%d", interval);
+	wsprintf(szBuf, _T("%d"), interval);
 
 	if(!WritePrivateProfileString(
 		TEXT("General"), TEXT("Interval"), szBuf, szIniFileName))

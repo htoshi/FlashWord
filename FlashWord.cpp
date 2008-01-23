@@ -2,7 +2,7 @@
  * FlashWord
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 #include	"FlashWord.h"
 
@@ -120,7 +120,7 @@ void OnPaint(HWND hWnd){
 				18, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
 				SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS,
 				CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-				VARIABLE_PITCH | FF_ROMAN , "MS Gothic");
+				VARIABLE_PITCH | FF_ROMAN , _T("MS UI Gothic"));
 
 		SelectObject(hdc, hFont18B);
 		SetTextColor(hdc, RGB(255, 255, 0));
@@ -135,7 +135,7 @@ void OnPaint(HWND hWnd){
 				16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
 				SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS,
 				CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-				VARIABLE_PITCH | FF_ROMAN , "MS Gothic");
+				VARIABLE_PITCH | FF_ROMAN , _T("MS UI Gothic"));
 
 		SelectObject(hdc, hFont16);
 		SetTextColor(hdc, RGB(255, 255, 255));

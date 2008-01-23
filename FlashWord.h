@@ -2,7 +2,7 @@
  * FlashWord
  *  $Id$
  *
- * Copyright (C) 2007, Toshi All rights reserved.
+ * Copyright (C) 2007-2008, Toshi All rights reserved.
 */
 #define		STRICT
 #define		WIN32_LEAN_AND_MEAN
@@ -15,7 +15,7 @@
 #include "Config.h"
 
 // データファイル名
-#define	DATAFILENAME "data.txt"
+#define	DATAFILENAME _T("data.txt")
 
 /* グローバル変数 */
 static int _tick=0;

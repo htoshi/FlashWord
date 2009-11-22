@@ -9,9 +9,10 @@
 #define IDC_STATIC_WINDOWCLASSNAME _T("FlashWord")
 #define IDC_STATIC_APPNAME _T("FlashWord")
 #define IDC_STATIC_AUTHOR _T("Toshi")
-#define IDC_STATIC_VERSION _T("Version 0.2")
+#define IDC_STATIC_VERSION _T("Version 0.3")
 #define IDC_STATIC_COPYRIGHT \
 		IDC_STATIC_APPNAME _T(" ") IDC_STATIC_VERSION _T(" ") IDC_STATIC_AUTHOR
+#define IDC_STATIC_PAUSESTR _T(" (pause)")
 
 /* ÉÅÉjÉÖÅ[IDê›íË */
 #define IDM_FLASHWORD_ABOUT 1

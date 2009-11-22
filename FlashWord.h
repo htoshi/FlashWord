@@ -21,6 +21,7 @@
 static int _tick=0;
 static int _index=0;
 static int _interval=0;
+static bool _pause=false;
 static WordData* _wordData;
 
 /* プロトタイプ宣言 */

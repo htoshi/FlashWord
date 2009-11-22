@@ -164,6 +164,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wparam, LPARAM lpara
 			OnTimer(hWnd);
 			return 0;
 
+		// マウス左ボタンクリック時
+		case WM_LBUTTONDOWN:
+
+			if(_pause){
+				_pause = false;
+				SetWindowText(hWnd, IDC_STATIC_APPNAME);
+			}else{
+				_pause = true;
+				SetWindowText(hWnd, IDC_STATIC_APPNAME IDC_STATIC_PAUSESTR);
+			}
+
+			return 0;
+
 		case WM_DESTROY:
 
 			// ウィンドウサイズの設定を保存
@@ -228,6 +241,11 @@ void OnTimer(HWND hWnd){
 //char buf[100];
 //sprintf(buf, "index=%d tick=%d\n", _index, _tick);
 //OutputDebugString(buf);
+
+	// 一時停止時
+	if(_pause){
+		return;
+	}
 
 	if(_tick == 0 || _tick == _interval){
 		// 更新領域追加 (WM_PAINT が呼ばれる)

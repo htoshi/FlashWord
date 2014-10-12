@@ -2,7 +2,7 @@
  * 単語データクラス
  *  $Id$
  *
- * Copyright (C) 2007-2008, Toshi All rights reserved.
+ * Copyright (C) 2007-2014, Toshi All rights reserved.
 */
 #include "WordData.h"
 
@@ -20,7 +20,7 @@ int WordData::initialize(TCHAR* filename){
 	total=0;
 
 	// データファイル名取得
-	if(getDataFileName(szDataFileName, sizeof(szDataFileName), filename) != TRUE){
+	if(getDataFileName(szDataFileName, _countof(szDataFileName), filename) != TRUE){
 		MessageBox(NULL, TEXT("データファイル名取得失敗"),
 					IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 		return FALSE;
@@ -93,7 +93,8 @@ int WordData::countData(TCHAR* filename){
 	TCHAR buf[LINE_MAX];
 	int count=0;
 
-	if((fp = _tfopen(filename, _T("rb")))==NULL){
+	_tfopen_s(&fp, filename, _T("rb"));
+	if(fp == NULL){
 		MessageBox(NULL, TEXT("データファイル読み込み失敗"),
 					IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 		return -1;
@@ -144,10 +145,11 @@ int WordData::readData(TCHAR* filename){
 	FILE* fp;
 	TCHAR buf[LINE_MAX];
 	TCHAR* p;
-	TCHAR* q;
+	TCHAR* next;
 	int count=0;
 
-	if((fp = _tfopen(filename, _T("rb")))==NULL){
+	_tfopen_s(&fp, filename, _T("rb"));
+	if(fp == NULL){
 		MessageBox(NULL, TEXT("データファイル読み込み失敗"),
 					IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 		return FALSE;
@@ -184,37 +186,23 @@ int WordData::readData(TCHAR* filename){
 			*p = _T('\0');
 		}
 
-		if((p=_tcstok(buf, _T("\t"))) == NULL){
+		p = _tcstok_s(buf, _T("\t"), &next);
+		if(p == NULL){
 			MessageBox(NULL, TEXT("データファイルフォーマットエラー"),
 						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 			return FALSE;
 		}
 
-		// Allocate word memory
-		if((q=(TCHAR*)malloc(sizeof(TCHAR) * _tcslen(p) + 1)) == NULL){
-			MessageBox(NULL, TEXT("メモリが確保できませんでした"),
-						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
-			return FALSE;
-		}
+		worddata[count].word = _tcsdup(p);
 
-		worddata[count].word = q;
-		_tcsncpy(worddata[count].word, p, _tcslen(p) + 1);
-
-		if((p=_tcstok(NULL, _T("\t"))) == NULL){
+		p = _tcstok_s(NULL, _T("\t"), &next);
+		if(p == NULL){
 			MessageBox(NULL, TEXT("データファイルフォーマットエラー"),
 						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 			return FALSE;
 		}
 
-		// Allocate meaning memory
-		if((q=(TCHAR*)malloc(sizeof(TCHAR) * _tcslen(p) + 1)) == NULL){
-			MessageBox(NULL, TEXT("メモリが確保できませんでした"),
-						IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
-			return FALSE;
-		}
-
-		worddata[count].mean = q;
-		_tcsncpy(worddata[count].mean, p, _tcslen(p) + 1);
+		worddata[count].mean = _tcsdup(p);
 
 		count++;
 	}
@@ -231,16 +219,13 @@ int WordData::getDataFileName(TCHAR* szFullFileName, DWORD nSize, TCHAR* szFileN
 	TCHAR szDir[_MAX_DIR];
 
 	// 実行ファイルのフルパスとファイル名を取得
-	if(!GetModuleFileName(NULL, szFullFileName, nSize))
+	if(!GetModuleFileName(NULL, szFullFileName, nSize*sizeof(TCHAR)))
 		return FALSE;
 
 	// フルパスを分解
-	_tsplitpath(szFullFileName, szDrive, szDir, NULL, NULL);
-
+	_tsplitpath_s(szFullFileName, szDrive, _countof(szDrive), szDir, _countof(szDir), NULL, 0, NULL, 0);
 	// szFileName にデータファイル名をフルパスで格納
-	_tcscpy(szFullFileName, szDrive);
-	_tcscat(szFullFileName, szDir);
-	_tcscat(szFullFileName, szFileName);
+	_sntprintf_s(szFullFileName, nSize, _TRUNCATE, L"%s%s%s", szDrive, szDir, szFileName);
 
 	return TRUE;
 }

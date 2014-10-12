@@ -2,7 +2,7 @@
  * FlashWord
  *  $Id$
  *
- * Copyright (C) 2007-2008, Toshi All rights reserved.
+ * Copyright (C) 2007-2014, Toshi All rights reserved.
 */
 #define		STRICT
 #define		WIN32_LEAN_AND_MEAN

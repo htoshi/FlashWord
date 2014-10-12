@@ -2,7 +2,7 @@
  * 初期設定ファイルクラス
  *  $Id$
  *
- * Copyright (C) 2007-2008, Toshi All rights reserved.
+ * Copyright (C) 2007-2014, Toshi All rights reserved.
 */
 #include "Config.h"
 
@@ -22,16 +22,13 @@ int Config::getIniFileName(TCHAR* szFullPathName, DWORD nSize){
 	TCHAR szDir[_MAX_DIR];
 
 	// 実行ファイルのフルパスとファイル名を取得
-	if(!GetModuleFileName(NULL, szFullPathName, nSize))
+	if(!GetModuleFileName(NULL, szFullPathName, nSize*sizeof(TCHAR)))
 		return ERR;
 
 	// フルパスを分解
-	_tsplitpath(szFullPathName, szDrive, szDir, NULL, NULL);
-
-	// szFullPathName に INI ファイル名をフルパスで格納
-	_tcscpy(szFullPathName, szDrive);
-	_tcscat(szFullPathName, szDir);
-	_tcscat(szFullPathName, INIFILENAME);
+	_tsplitpath_s(szFullPathName, szDrive, _countof(szDrive), szDir, _countof(szDir), NULL, 0, NULL, 0);
+	// szFileName にデータファイル名をフルパスで格納
+	_sntprintf_s(szFullPathName, nSize, _TRUNCATE, L"%s%s%s", szDrive, szDir, INIFILENAME);
 
 	return OK;
 }
@@ -46,7 +43,7 @@ int Config::readWindowRect(RECT* rect){
 	TCHAR szBuf[100];
 
 	// INI ファイル名をフルパスで取得
-	if(getIniFileName(szIniFileName, sizeof(szIniFileName)) != OK)
+	if(getIniFileName(szIniFileName, _countof(szIniFileName)) != OK)
 		return ERR;
 
 	// Top 位置の取得
@@ -96,7 +93,7 @@ int Config::writeWindowRect(RECT* rect){
 	TCHAR szBuf[100];
 
 	// INI ファイル名をフルパスで取得
-	if(getIniFileName(szIniFileName, sizeof(szIniFileName)) != OK)
+	if(getIniFileName(szIniFileName, _countof(szIniFileName)) != OK)
 		return ERR;
 
 	// Top 位置の保存
@@ -140,7 +137,7 @@ int Config::readInterval(int* interval){
 	TCHAR szBuf[100];
 
 	// INI ファイル名をフルパスで取得
-	if(getIniFileName(szIniFileName, sizeof(szIniFileName)) != OK)
+	if(getIniFileName(szIniFileName, _countof(szIniFileName)) != OK)
 		return ERR;
 
 	// Interval の取得
@@ -168,7 +165,7 @@ int Config::writeInterval(int interval){
 	TCHAR szBuf[100];
 
 	// INI ファイル名をフルパスで取得
-	if(getIniFileName(szIniFileName, sizeof(szIniFileName)) != OK)
+	if(getIniFileName(szIniFileName, _countof(szIniFileName)) != OK)
 		return ERR;
 
 	// Interval の保存

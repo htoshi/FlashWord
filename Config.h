@@ -2,7 +2,7 @@
  * 初期設定ファイルクラス
  *  $Id$
  *
- * Copyright (C) 2007-2008, Toshi All rights reserved.
+ * Copyright (C) 2007-2014, Toshi All rights reserved.
 */
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
@@ -17,8 +17,8 @@
 #define DEFAULT_WINDOW_TOP _T("10")
 #define DEFAULT_WINDOW_LEFT _T("10")
 // ウィンドウのデフォルトサイズ
-#define DEFAULT_WINDOW_WIDTH _T("300")
-#define DEFAULT_WINDOW_HEIGHT _T("70")
+#define DEFAULT_WINDOW_WIDTH _T("320")
+#define DEFAULT_WINDOW_HEIGHT _T("86")
 // デフォルトのインターバル
 #define DEFAULT_INTERVAL _T("4")
 

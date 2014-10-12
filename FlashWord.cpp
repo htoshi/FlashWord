@@ -2,7 +2,7 @@
  * FlashWord
  *  $Id$
  *
- * Copyright (C) 2007-2008, Toshi All rights reserved.
+ * Copyright (C) 2007-2014, Toshi All rights reserved.
 */
 #include	"FlashWord.h"
 
@@ -116,32 +116,32 @@ void OnPaint(HWND hWnd){
 
 	// 単語を描画
 	if(_tick >= 0){
-		HFONT hFont18B = CreateFont(
-				18, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
+		HFONT hFont = CreateFont(
+				26, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
 				SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS,
 				CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-				VARIABLE_PITCH | FF_ROMAN , _T("MS UI Gothic"));
+				VARIABLE_PITCH | FF_ROMAN , _T("Segoe UI Semibold"));
 
-		SelectObject(hdc, hFont18B);
+		SelectObject(hdc, hFont);
 		SetTextColor(hdc, RGB(255, 255, 0));
 		TextOut(hdc, 5, 0, _wordData->getWord(_index), _wordData->getWordLen(_index));
 
-		DeleteObject(hFont18B);
+		DeleteObject(hFont);
 	}
 
 	// 意味を描画
 	if(_tick >= _interval){
-		HFONT hFont16 = CreateFont(
-				16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+		HFONT hFont = CreateFont(
+				22, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
 				SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS,
 				CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-				VARIABLE_PITCH | FF_ROMAN , _T("MS UI Gothic"));
+				VARIABLE_PITCH | FF_ROMAN , _T("Meiryo UI"));
 
-		SelectObject(hdc, hFont16);
+		SelectObject(hdc, hFont);
 		SetTextColor(hdc, RGB(255, 255, 255));
-		TextOut(hdc, 5, 20, _wordData->getMean(_index), _wordData->getMeanLen(_index));
+		TextOut(hdc, 5, 24, _wordData->getMean(_index), _wordData->getMeanLen(_index));
 
-		DeleteObject(hFont16);
+		DeleteObject(hFont);
 	}
 
 	EndPaint(hWnd , &ps);
@@ -177,10 +177,13 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wparam, LPARAM lpara
 
 			return 0;
 
-		case WM_DESTROY:
+		case WM_CLOSE:
+			RECT Rect;
+
+			ShowWindow(hWnd, SW_HIDE);
+			ShowWindow(hWnd, SW_RESTORE);
 
 			// ウィンドウサイズの設定を保存
-			RECT Rect;
 			GetWindowRect(hWnd, (LPRECT)&Rect);
 
 			// 設定ファイルクラス
@@ -191,6 +194,10 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wparam, LPARAM lpara
 			config->writeInterval(_interval);
 
 			delete(config);
+
+			DestroyWindow(hWnd);
+
+		case WM_DESTROY:
 
 			PostQuitMessage(0);
 			return  0;
@@ -210,7 +217,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wparam, LPARAM lpara
 					TCHAR szDataFileName[_MAX_PATH];
 
 					// データファイル名取得
-					if(_wordData->getDataFileName(szDataFileName, sizeof(szDataFileName), DATAFILENAME) != TRUE){
+					if(_wordData->getDataFileName(szDataFileName, _countof(szDataFileName), DATAFILENAME) != TRUE){
 						MessageBox(NULL, TEXT("データファイル名取得失敗"),
 									IDC_STATIC_APPNAME, MB_ICONSTOP | MB_OK);
 						break;
@@ -280,7 +287,7 @@ void deleteMenu(HWND hWnd){
 	DeleteMenu(hMenu, SC_SIZE, MF_BYCOMMAND);
 //	DeleteMenu(hMenu, SC_MOVE, MF_BYCOMMAND);
 	DeleteMenu(hMenu, SC_MAXIMIZE, MF_BYCOMMAND);
-	DeleteMenu(hMenu, SC_MINIMIZE, MF_BYCOMMAND);
+//	DeleteMenu(hMenu, SC_MINIMIZE, MF_BYCOMMAND);
 	DeleteMenu(hMenu, SC_RESTORE, MF_BYCOMMAND);
 }
 

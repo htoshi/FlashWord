@@ -2,7 +2,7 @@
  * 初期設定ファイルクラス
  *  $Id$
  *
- * Copyright (C) 2007-2014, Toshi All rights reserved.
+ * Copyright (C) 2007-2015, Toshi All rights reserved.
 */
 #include "Config.h"
 
@@ -52,7 +52,7 @@ int Config::readWindowRect(RECT* rect){
 			szBuf, sizeof(szBuf), szIniFileName) == 0)
 		return ERR;
 
-	rect->top = (_tstol(szBuf) == 0)?_tstol(DEFAULT_WINDOW_TOP):_tstol(szBuf);
+	rect->top = (_tstol(szBuf) < 0)?_tstol(DEFAULT_WINDOW_TOP):_tstol(szBuf);
 
 	// Left 位置の取得
 	if(GetPrivateProfileString(
@@ -60,7 +60,7 @@ int Config::readWindowRect(RECT* rect){
 			szBuf, sizeof(szBuf), szIniFileName) == 0)
 		return ERR;
 
-	rect->left = (_tstol(szBuf) == 0)?_tstol(DEFAULT_WINDOW_LEFT):_tstol(szBuf);
+	rect->left = (_tstol(szBuf) < 0)?_tstol(DEFAULT_WINDOW_LEFT):_tstol(szBuf);
 
 	// Width を読み込んで Right に変換して格納
 	if(GetPrivateProfileString(

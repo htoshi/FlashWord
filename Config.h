@@ -2,7 +2,7 @@
  * 初期設定ファイルクラス
  *  $Id$
  *
- * Copyright (C) 2007-2014, Toshi All rights reserved.
+ * Copyright (C) 2007-2015, Toshi All rights reserved.
 */
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
